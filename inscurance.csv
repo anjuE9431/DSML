@@ -1,0 +1,23 @@
+# Our model’s dependent variable is expenses , which measures the medical
+# costs each person charged to the insurance plan for the year
+# Read the csv file into a data frame
+insurance <- read.csv("insurance.csv")
+# Training Data
+insurance_train <- insurance[1:1000,]
+# Test Data
+insurance_test <- insurance[1001:1338,]
+# lm() returns a multiple linear regression model object
+# the dependent variable expenses goes to the left of the tilde
+# the independent variables go to the right, separated by + sign
+# data specifies the data frame in which these variables can be found
+# lm() is contained in stats package, which is loaded by default
+insurance_model <- lm(expenses ~ age + sex + bmi + children + smoker +
+region, data = insurance_train)
+# Prints estimated regression coefficients
+print(insurance_model)
+# Evaluate Model Performance
+print(summary(insurance_model))
+# Predicting on test data
+insurance_pred <- predict(insurance_model, insurance_test)
+# Print prediction
+print(insurance_pred)
