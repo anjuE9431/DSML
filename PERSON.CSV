@@ -1,0 +1,48 @@
+# -----------------------------------------------------------
+# Load Required Packages
+# -----------------------------------------------------------
+library(C50)       # For C5.0 decision tree algorithm
+library(gmodels)   # For CrossTable function (confusion matrix)
+
+# -----------------------------------------------------------
+# Load Dataset
+# -----------------------------------------------------------
+person <- read.csv("C:/Users/Admin/Downloads/person.csv")
+
+# -----------------------------------------------------------
+# Split Data into Training and Testing Sets
+# -----------------------------------------------------------
+
+# Training Data (first 8 rows, excluding the target column 'Cheats?')
+person_train <- person[1:8, -5]
+
+# Testing Data (rows 9-10, excluding the target column 'Cheats?')
+person_test <- person[9:10, -5]
+
+# Training Labels (5th column 'Cheats?')
+person_train_labels <- person[1:8, 5]
+
+# Testing Labels (5th column 'Cheats?')
+person_test_labels <- person[9:10, 5]
+
+# -----------------------------------------------------------
+# Train the Decision Tree Model using C5.0
+# -----------------------------------------------------------
+person_model <- C5.0(person_train, as.factor(person_train_labels))
+
+# Print model summary
+print(person_model)
+print(summary(person_model))
+
+# -----------------------------------------------------------
+# Make Predictions on Test Data
+# -----------------------------------------------------------
+person_pred <- predict(person_model, person_test)
+
+# Print predicted labels
+print(person_pred)
+
+# -----------------------------------------------------------
+# Evaluate Model Performance Using CrossTable
+# -----------------------------------------------------------
+CrossTable(person_test_labels, person_pred, prop.chisq = FALSE)
